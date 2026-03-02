@@ -1,0 +1,52 @@
+{
+  "name": "tasklane",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "^22.22.2 || ^24.15.0 || >=26"
+  },
+  "workspaces": [
+    "packages/*",
+    "apps/*",
+    "agent-tools"
+  ],
+  "scripts": {
+    "setup": "npm run typecheck && npm run db:reset -w @tasklane/api",
+    "dev": "concurrently -k -n api,web -c cyan,magenta \"npm run dev -w @tasklane/api\" \"npm run dev -w @tasklane/web\"",
+    "test": "npm run test --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present && tsc --noEmit -p tsconfig.e2e.json",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "test:e2e": "playwright test",
+    "eval:spec": "node agent-tools/eval.mjs spec",
+    "spec:lint": "node agent-tools/spec-lint.mjs",
+    "accept": "tsx agent-tools/accept.ts",
+    "done": "node agent-tools/done-check.mjs",
+    "gate": "node agent-tools/verdict-gate.mjs",
+    "pipeline": "node agent-tools/pipeline.mjs",
+    "trace": "node agent-tools/trace.mjs",
+    "agent:run": "node agent-tools/run-agent.mjs",
+    "deploy:staging": "tsx agent-tools/deploy-staging.ts"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^22",
+    "eslint": "^10.12.0",
+    "globals": "^17.13.0",
+    "prettier": "^3.9.9",
+    "tsx": "^4.23.15",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.71.1",
+    "vitest": "^5.0.3",
+    "@playwright/test": "^1.63.0",
+    "concurrently": "^10.0.5"
+  },
+  "allowScripts": {
+    "better-sqlite3": false,
+    "esbuild": false,
+    "fsevents": false
+  },
+  "overrides": {
+    "shell-quote": "^1.11.0"
+  }
+}

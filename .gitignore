@@ -1,0 +1,16 @@
+node_modules/
+dist/
+apps/api/data/
+*.log
+
+# Claude Code personal overrides
+.claude/settings.local.json
+CLAUDE.local.md
+
+# Playwright
+test-results/
+playwright-report/
+
+# Agent runs and the simulated staging environment
+runs/
+.staging/

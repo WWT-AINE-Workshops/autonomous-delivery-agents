@@ -1,0 +1,7 @@
+{
+  "verdict": "approve",
+  "reviewer": "sample",
+  "findings": [
+    { "severity": "low", "file": "apps/web/src/styles.css", "summary": "Badge color is hard-coded" }
+  ]
+}

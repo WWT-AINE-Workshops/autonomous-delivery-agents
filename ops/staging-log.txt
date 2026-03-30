@@ -1,0 +1,12 @@
+2026-09-15T14:02:11.120Z INFO  deploy r41 started
+2026-09-15T14:02:11.480Z INFO  migration applied: CREATE INDEX idx_tasks_due
+2026-09-15T14:02:12.015Z INFO  GET /api/health 200 2ms
+2026-09-15T14:02:12.044Z INFO  GET /api/tasks?status=todo 200 6ms
+2026-09-15T16:40:03.902Z INFO  deploy r42 started
+2026-09-15T16:40:04.311Z INFO  migration applied: ALTER TABLE tasks RENAME COLUMN status TO state
+2026-09-15T16:40:04.870Z INFO  GET /api/health 200 1ms
+2026-09-15T16:40:09.553Z ERROR GET /api/tasks?status=todo 500 SqliteError: no such column: status
+2026-09-15T16:40:12.201Z ERROR GET /api/summary 500 SqliteError: no such column: status
+2026-09-15T16:41:00.017Z INFO  GET /api/health 200 1ms
+2026-09-15T16:41:02.664Z ERROR GET /api/tasks?status=doing 500 SqliteError: no such column: status
+2026-09-15T16:41:30.310Z WARN  error rate 100% on /api/tasks for 60s

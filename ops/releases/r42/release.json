@@ -1,0 +1,1 @@
+{ "release": "r42", "notes": "Rename the status column to state, ahead of the workflow rework." }

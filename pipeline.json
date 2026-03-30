@@ -1,0 +1,19 @@
+{
+  "canary": "runs/CANARY.txt",
+  "stages": [
+    { "name": "plan", "run": "node agent-tools/spec-lint.mjs specs/priority.md" },
+    { "name": "design", "run": "node agent-tools/require-file.mjs docs/adr", "advisory": true },
+    { "name": "build", "run": "npm run typecheck" },
+    { "name": "test", "run": "node agent-tools/done-check.mjs done.json" },
+    { "name": "review", "run": "node agent-tools/verdict-gate.mjs verdict.json" },
+    {
+      "name": "deploy",
+      "run": "npm run deploy:staging -- --release r42 --smoke full --auto-rollback"
+    },
+    {
+      "name": "operate",
+      "run": "node agent-tools/require-file.mjs runs/operate/triage.md",
+      "advisory": true
+    }
+  ]
+}

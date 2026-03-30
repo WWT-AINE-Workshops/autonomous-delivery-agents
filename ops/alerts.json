@@ -1,0 +1,16 @@
+[
+  {
+    "id": "alert-1",
+    "severity": "high",
+    "firedAt": "2026-09-15T16:41:30.000Z",
+    "summary": "Staging: 5xx rate on /api/tasks above 50% for 60 seconds",
+    "dashboard": "staging-api"
+  },
+  {
+    "id": "alert-2",
+    "severity": "low",
+    "firedAt": "2026-09-15T16:50:00.000Z",
+    "summary": "Staging: disk usage above 70%",
+    "dashboard": "staging-host"
+  }
+]

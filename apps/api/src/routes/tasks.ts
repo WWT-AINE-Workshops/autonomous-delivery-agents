@@ -1,9 +1,9 @@
-import { DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE, TASK_STATUSES } from '@tasklane/shared';
+import { DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE, TASK_PRIORITIES, TASK_STATUSES } from '@tasklane/shared';
 import type { FastifyInstance } from 'fastify';
 import { z } from 'zod';
 import type { AppDeps } from '../app';
 import { HttpError, notFound, toId } from '../errors';
-import { createTask, getTask, listTasks, setTaskStatus, userExists } from '../repo';
+import { createTask, getTask, listTasks, updateTask, userExists } from '../repo';
 
 // Keeps (page - 1) * pageSize inside what SQLite accepts as an OFFSET.
 const MAX_PAGE = 100_000;
@@ -23,9 +23,18 @@ const CreateBody = z.object({
   title: z.string().trim().min(1).max(200),
   assigneeId: z.number().int().positive().nullable().default(null),
   dueDate: DueDate.nullable().default(null),
+  priority: z.enum(TASK_PRIORITIES).default('normal'),
 });
 
-const PatchBody = z.object({ status: z.enum(TASK_STATUSES) });
+const PatchBody = z
+  .object({
+    status: z.enum(TASK_STATUSES).optional(),
+    priority: z.enum(TASK_PRIORITIES).optional(),
+  })
+  .refine(
+    (b) => b.status !== undefined || b.priority !== undefined,
+    'send status, priority or both',
+  );
 
 export function taskRoutes(app: FastifyInstance, deps: AppDeps): void {
   const { db } = deps;
@@ -50,8 +59,7 @@ export function taskRoutes(app: FastifyInstance, deps: AppDeps): void {
 
   app.patch<{ Params: { id: string } }>('/api/tasks/:id', async (request) => {
     const id = toId(request.params.id);
-    const { status } = PatchBody.parse(request.body);
-    const task = setTaskStatus(db, id, status);
+    const task = updateTask(db, id, PatchBody.parse(request.body));
     if (!task) throw notFound(`Task ${id}`);
     return task;
   });

@@ -17,6 +17,7 @@ describe('GET /api/tasks', () => {
       assigneeId: 1,
       createdAt: '2026-09-01T09:00:00.000Z',
       dueDate: '2026-09-10',
+      priority: 'normal',
     });
   });
 
@@ -83,6 +84,7 @@ describe('POST /api/tasks', () => {
       assigneeId: 2,
       createdAt: '2026-10-01T08:00:00.000Z',
       dueDate: null,
+      priority: 'normal',
     });
   });
 

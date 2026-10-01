@@ -100,6 +100,7 @@ export function App() {
                 {columns[status].map((task) => (
                   <li key={task.id} data-testid="task-card">
                     <p className="title">{task.title}</p>
+                    {task.priority === 'high' && <p className="badge">High</p>}
                     <p className="assignee">{userName(task.assigneeId)}</p>
                     {task.dueDate && <p className="due">Due {task.dueDate}</p>}
                     <div className="moves">

@@ -1,4 +1,4 @@
-import type { Summary, Task, TaskPage, TaskStatus } from '@tasklane/shared';
+import type { Summary, Task, TaskPage, TaskPriority, TaskStatus } from '@tasklane/shared';
 import type { Db } from './db';
 
 interface TaskRow {
@@ -8,6 +8,7 @@ interface TaskRow {
   assignee_id: number | null;
   created_at: string;
   due_date: string | null;
+  priority: TaskPriority;
 }
 
 const toTask = (r: TaskRow): Task => ({
@@ -17,6 +18,7 @@ const toTask = (r: TaskRow): Task => ({
   assigneeId: r.assignee_id,
   createdAt: r.created_at,
   dueDate: r.due_date,
+  priority: r.priority,
 });
 
 export function listTasks(
@@ -46,19 +48,30 @@ export function userExists(db: Db, id: number): boolean {
 
 export function createTask(
   db: Db,
-  input: { title: string; assigneeId: number | null; dueDate: string | null },
+  input: {
+    title: string;
+    assigneeId: number | null;
+    dueDate: string | null;
+    priority: TaskPriority;
+  },
   now: Date,
 ): Task {
   const info = db
     .prepare(
-      'INSERT INTO tasks (title, status, assignee_id, created_at, due_date) VALUES (?, ?, ?, ?, ?)',
+      'INSERT INTO tasks (title, status, assignee_id, created_at, due_date, priority) VALUES (?, ?, ?, ?, ?, ?)',
     )
-    .run(input.title, 'todo', input.assigneeId, now.toISOString(), input.dueDate);
+    .run(input.title, 'todo', input.assigneeId, now.toISOString(), input.dueDate, input.priority);
   return getTask(db, Number(info.lastInsertRowid))!;
 }
 
-export function setTaskStatus(db: Db, id: number, status: TaskStatus): Task | undefined {
-  db.prepare('UPDATE tasks SET status = ? WHERE id = ?').run(status, id);
+export function updateTask(
+  db: Db,
+  id: number,
+  patch: { status?: TaskStatus; priority?: TaskPriority },
+): Task | undefined {
+  db.prepare(
+    'UPDATE tasks SET status = COALESCE(?, status), priority = COALESCE(?, priority) WHERE id = ?',
+  ).run(patch.status ?? null, patch.priority ?? null, id);
   return getTask(db, id);
 }
 

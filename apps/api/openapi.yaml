@@ -50,6 +50,7 @@ paths:
                 title: { type: string, minLength: 1, maxLength: 200 }
                 assigneeId: { type: integer, nullable: true }
                 dueDate: { type: string, format: date, nullable: true }
+                priority: { $ref: '#/components/schemas/TaskPriority' }
       responses:
         '201':
           description: The new task.
@@ -80,16 +81,17 @@ paths:
         '400': { $ref: '#/components/responses/Error' }
         '404': { $ref: '#/components/responses/Error' }
     patch:
-      summary: Change a task's status
+      summary: Change a task's status, priority or both
       requestBody:
         required: true
         content:
           application/json:
             schema:
               type: object
-              required: [status]
+              minProperties: 1
               properties:
                 status: { $ref: '#/components/schemas/TaskStatus' }
+                priority: { $ref: '#/components/schemas/TaskPriority' }
       responses:
         '200':
           description: The updated task.
@@ -113,9 +115,12 @@ components:
     TaskStatus:
       type: string
       enum: [todo, doing, done]
+    TaskPriority:
+      type: string
+      enum: [low, normal, high]
     Task:
       type: object
-      required: [id, title, status, assigneeId, createdAt, dueDate]
+      required: [id, title, status, assigneeId, createdAt, dueDate, priority]
       properties:
         id: { type: integer }
         title: { type: string }
@@ -123,6 +128,7 @@ components:
         assigneeId: { type: integer, nullable: true }
         createdAt: { type: string, format: date-time }
         dueDate: { type: string, format: date, nullable: true }
+        priority: { $ref: '#/components/schemas/TaskPriority' }
     Summary:
       type: object
       required: [todo, doing, done, overdue, asOf]

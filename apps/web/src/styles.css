@@ -92,3 +92,10 @@ li {
   font-size: 0.8rem;
   color: #555;
 }
+
+.badge {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #b42318;
+}

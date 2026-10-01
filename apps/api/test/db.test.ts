@@ -8,6 +8,7 @@ describe('openDb / seed', () => {
     expect(db.prepare('SELECT name FROM schema_migrations').pluck().all()).toEqual([
       '001_init.sql',
       '002_due_dates.sql',
+      '003_priority.sql',
     ]);
     expect(migrate(db)).toEqual([]);
   });

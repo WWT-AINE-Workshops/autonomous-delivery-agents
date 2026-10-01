@@ -9,6 +9,7 @@ const task = (id: number, status: Task['status'], assigneeId: number | null): Ta
   assigneeId,
   createdAt: '2026-09-01T09:00:00.000Z',
   dueDate: null,
+  priority: 'normal',
 });
 
 const TASKS = [task(1, 'todo', 1), task(2, 'doing', 2), task(3, 'done', null), task(4, 'todo', 2)];

@@ -1,0 +1,19 @@
+{
+  "maxIterations": 5,
+  "criteria": [
+    { "name": "types are clean", "run": "npm run typecheck" },
+    { "name": "lint is clean", "run": "npm run lint" },
+    { "name": "all tests pass", "run": "npm test" },
+    {
+      "name": "overdue acceptance passes",
+      "run": "npm run accept -- specs/overdue.acceptance.json"
+    }
+  ],
+  "forbid": [
+    {
+      "name": "no skipped or focused tests",
+      "pattern": "\\.(skip|only)\\(",
+      "paths": ["apps", "packages"]
+    }
+  ]
+}

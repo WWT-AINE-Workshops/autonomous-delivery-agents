@@ -79,7 +79,9 @@ export function summarize(db: Db, today: string): Summary {
   const count = (status: TaskStatus) =>
     db.prepare('SELECT COUNT(*) FROM tasks WHERE status = ?').pluck().get(status) as number;
   const overdue = db
-    .prepare('SELECT COUNT(*) FROM tasks WHERE due_date IS NOT NULL AND due_date <= ?')
+    .prepare(
+      "SELECT COUNT(*) FROM tasks WHERE due_date IS NOT NULL AND due_date < ? AND status != 'done'",
+    )
     .pluck()
     .get(today) as number;
   return { todo: count('todo'), doing: count('doing'), done: count('done'), overdue, asOf: today };

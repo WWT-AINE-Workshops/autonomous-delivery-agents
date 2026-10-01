@@ -1,0 +1,12 @@
+{
+  "name": "Overdue count",
+  "now": "2026-09-15T12:00:00.000Z",
+  "steps": [
+    {
+      "method": "GET",
+      "url": "/api/summary",
+      "status": 200,
+      "json": { "overdue": 2, "asOf": "2026-09-15" }
+    }
+  ]
+}

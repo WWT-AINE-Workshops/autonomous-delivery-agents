@@ -27,3 +27,22 @@ describe('due dates', () => {
     expect((await post({ title: 'x', dueDate: v })).statusCode).toBe(400);
   });
 });
+
+describe('overdue count', () => {
+  const overdueOn = async (iso: string) => {
+    const { app } = makeTestApp({ now: () => new Date(iso) });
+    return (await app.inject({ method: 'GET', url: '/api/summary' })).json().overdue;
+  };
+
+  it('counts open tasks due before today', async () => {
+    expect(await overdueOn('2026-09-15T12:00:00.000Z')).toBe(2);
+  });
+
+  it('does not count a task due today', async () => {
+    expect(await overdueOn('2026-09-12T12:00:00.000Z')).toBe(1);
+  });
+
+  it('never counts a done task', async () => {
+    expect(await overdueOn('2026-12-31T12:00:00.000Z')).toBe(4);
+  });
+});

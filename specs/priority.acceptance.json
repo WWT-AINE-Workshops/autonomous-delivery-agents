@@ -1,0 +1,34 @@
+{
+  "name": "Task priority",
+  "now": "2026-09-15T12:00:00.000Z",
+  "steps": [
+    {
+      "method": "POST",
+      "url": "/api/tasks",
+      "body": { "title": "x" },
+      "status": 201,
+      "json": { "priority": "normal" }
+    },
+    {
+      "method": "POST",
+      "url": "/api/tasks",
+      "body": { "title": "x", "priority": "high" },
+      "status": 201,
+      "json": { "priority": "high" }
+    },
+    {
+      "method": "POST",
+      "url": "/api/tasks",
+      "body": { "title": "x", "priority": "urgent" },
+      "status": 400
+    },
+    {
+      "method": "PATCH",
+      "url": "/api/tasks/7",
+      "body": { "priority": "high" },
+      "status": 200,
+      "json": { "priority": "high", "status": "todo" }
+    },
+    { "method": "PATCH", "url": "/api/tasks/7", "body": {}, "status": 400 }
+  ]
+}

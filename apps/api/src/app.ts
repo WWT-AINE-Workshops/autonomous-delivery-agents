@@ -3,6 +3,7 @@ import { ZodError } from 'zod';
 import type { Db } from './db';
 import { HttpError } from './errors';
 import { healthRoutes } from './routes/health';
+import { searchRoutes } from './routes/search';
 import { summaryRoutes } from './routes/summary';
 import { taskRoutes } from './routes/tasks';
 
@@ -38,5 +39,6 @@ export function buildApp(deps: AppDeps): FastifyInstance {
   healthRoutes(app);
   taskRoutes(app, deps);
   summaryRoutes(app, deps);
+  searchRoutes(app, deps);
   return app;
 }
